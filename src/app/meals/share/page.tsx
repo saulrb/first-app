@@ -1,8 +1,14 @@
+'use client'
 import { NextPage } from 'next'
-import classes from './page.module.css'
+import MealsFormSubmit from '~/components/meals/meals-form-submit'
 import ImagePicker from '~/components/file-upload/image-picker'
+import shareMeal from '~lib/action'
+
+import classes from './page.module.css'
+import { useFormState } from 'react-dom'
 
 const SharePage: NextPage = () => {
+  const [state, formAction] = useFormState(shareMeal, { message: undefined })
   return (
     <>
       <header className={classes.highlight}>
@@ -12,7 +18,7 @@ const SharePage: NextPage = () => {
         <p>Or any other meal you feel needs sharing!</p>
       </header>
       <main className={classes.main}>
-        <form className={classes.form}>
+        <form className={classes.form} action={formAction}>
           <div className={classes.row}>
             <p>
               <label htmlFor="name">Your name</label>
@@ -35,9 +41,10 @@ const SharePage: NextPage = () => {
             <label htmlFor="instructions">Instructions</label>
             <textarea id="instructions" name="instructions" rows="10" required></textarea>
           </p>
-          <ImagePicker label="" name="" />
+          <ImagePicker label="Your Image" name="image" />
+          {state.message && <p>{state.message}</p>}
           <p className={classes.actions}>
-            <button type="submit">Share Meal</button>
+            <MealsFormSubmit />
           </p>
         </form>
       </main>

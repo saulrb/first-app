@@ -10,6 +10,17 @@ type Props = {
     mealId: any
   }
 }
+// Metadata generated for a dynamic page
+export const generateMetadata = async ({ params: { mealId = null } }) => {
+  const meal: MealModel = getMeal(mealId)
+  if (!meal) {
+    notFound()
+  }
+  return {
+    title: meal.title,
+    description: meal.summary
+  }
+}
 
 const MealsPostPage: NextPage<Props> = ({ params: { mealId = null } }) => {
   const meal: MealModel = getMeal(mealId)
